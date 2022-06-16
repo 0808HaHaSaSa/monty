@@ -1,45 +1,93 @@
-#ifndef MONTY_H
-#define MONTY_H
+#ifndef MONTY
+#define MONTY
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <unistd.h>
-#include <fcntl.h>
 #include <ctype.h>
 
-#include "structs.h"
 
-/* macros */
-#define DELIMITERS "\n\t\r "
+/**
+ * struct stack_s - doubly linked list representation of a stack (or queue)
+ * @n: integer
+ * @prev: points to the previous element of the stack (or queue)
+ * @next: points to the next element of the stack (or queue)
+ *
+ * Description: doubly linked list node structure
+ * for stack, queues, LIFO, FIFO Holberton project
+ */
+typedef struct stack_s
+{
+	int n;
+	struct stack_s *prev;
+	struct stack_s *next;
+} stack_t;
 
-/* struct search function */
-int opcode_struct(char *opcode, stack_t **stack, unsigned int line_number);
+/**
+ * struct instruction_s - opcode and its function
+ * @opcode: the opcode
+ * @f: function to handle the opcode
+ *
+ * Description: opcode and its function
+ * for stack, queues, LIFO, FIFO Holberton project
+ */
+typedef struct instruction_s
+{
+	char *opcode;
+	void (*f)(stack_t **stack, unsigned int line_number);
+} instruction_t;
 
-/* stack functions */
-void push(stack_t **stack, unsigned int line_number, char *n);
-void pop(stack_t **stack, unsigned int line_number);
-void swap(stack_t **stack, unsigned int line_number);
-void nop(stack_t **stack, unsigned int line_number);
+/**
+ * struct content  - opcode and its function
+ * @op_func: the opcode
+ * @value: function to handle the opcode
+ * @line_n: number of the line
+ * Description: opcode and its function
+ * for stack, queues, LIFO, FIFO Holberton project
+ */
+typedef struct content
+{
+	char *op_func;
+	char *value;
+	int line_n;
+} content_v;
 
-/* print functions */
-void pall(stack_t **stack, unsigned int line_number);
-void pint(stack_t **stack, unsigned int line_number);
-void pchar(stack_t **stack, unsigned int line_number);
-void pstr(stack_t **stack, unsigned int line_number);
+/**
+ * struct stakit  - opcode and its function
+ * @int_value: idk.
+ * @data: idk.
+ * @fp: idk.
+ * @line: idk.
+ * Description: honestly, idk.
+ */
+typedef struct stakit
+{
+	int int_value;
+	content_v data;
+	FILE *fp;
+	char *line;
+} extern_var_t;
+extern extern_var_t ex;
 
-/* calc functions */
-void _add(stack_t **stack, unsigned int line_number);
-void _sub(stack_t **stack, unsigned int line_number);
-void _mul(stack_t **stack, unsigned int line_number);
-void _div(stack_t **stack, unsigned int line_number);
-void _mod(stack_t **stack, unsigned int line_number);
+int main(int argc, char *argv[]);
+void read_file(FILE *fp);
+void execute_function(stack_t **stack);
+size_t not_empty(char *line);
+content_v clean_spaces(char *line);
 
-/* utility functions */
-size_t stack_length(stack_t **stack);
-void free_stack(stack_t **stack);
-void free_all(stack_t *stack, char *line, FILE *fp);
+void monty_push(stack_t **top, unsigned int line_n);
+void monty_pall(stack_t **top, unsigned int line_n);
+void monty_pint(stack_t **top, unsigned int line_n);
+void monty_pop(stack_t **top, unsigned int line_n);
+void monty_swap(stack_t **top, unsigned int line_n);
+void monty_add(stack_t **top, unsigned int line_n);
+void monty_sub(stack_t **top_ptr, unsigned int line_n);
+void monty_mul(stack_t **top_ptr, unsigned int line_n);
+void monty_nop(stack_t **top_ptr, unsigned int line_n);
+void monty_div(stack_t **top_ptr, unsigned int line_n);
+void monty_mod(stack_t **top_ptr, unsigned int line_n);
+void monty_pchar(stack_t **top_ptr, unsigned int line_n);
+void monty_pstr(stack_t **top_ptr, unsigned int line_n);
 
-#endif /* MONTY_H */
+void free_stack(stack_t *top_ptr);
+#endif
